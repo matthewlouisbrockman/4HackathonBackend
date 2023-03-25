@@ -7,6 +7,7 @@ def queryChat(messages: list, **kwargs) -> str:
     response = openai.ChatCompletion.create(
       messages=messages,
       model="gpt-3.5-turbo",
+      temperature=1,
       **kwargs
     )
 

@@ -17,9 +17,9 @@ def get_connection():
 
 
 def createGameId():
-    insert_query = f"INSERT INTO games " \
-                   f"DEFAULT VALUES " \
-                   f"RETURNING id"
+    insert_query = """INSERT INTO games
+                   DEFAULT VALUES
+                   RETURNING id"""
     conn = get_connection()
     cur = conn.cursor()
     cur.execute(insert_query)
@@ -32,13 +32,13 @@ def createGameId():
 
 def insertAction(action, game_id):
     game_id = game_id or createGameId()
-    insert_query = f"INSERT INTO actions " \
-                   f"(action_id, created_at, action, actor, game_id) " \
-                   f"VALUES " \
-                   f"(%s, %s, %s, %s, %s)"
+    insert_query = """INSERT INTO actions
+                   (action_id, created_at, action, actor, game_id)
+                   VALUES
+                   (%s, %s, %s, %s, %s)"""
     conn = get_connection()
     cur = conn.cursor()
-    cur.execute(insert_query, (, game_id))
+    cur.execute(insert_query, (game_id,))
     conn.commit()
     cur.close()
     conn.close()
@@ -52,13 +52,13 @@ def getActions(game_id):
     conn = get_connection()
     cur = conn.cursor()
     cur.execute(select_query, (game_id,))
-    row = cur.fetchone()
+    rows = cur.fetch()
     cur.close()
     conn.close() 
-    return row
+    return rows
 
 
 if __name__ == "__main__":
     # TESTING
-    action = ()
+    action = 
     print(createGameId())

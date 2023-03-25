@@ -25,7 +25,7 @@ def insertAction(action, game_id):
     cur = conn.cursor()
     cur.execute(insert_query, (*action, game_id))
     conn.commit()
-    curr.close()
+    cur.close()
     conn.close()
 
 

@@ -32,7 +32,7 @@ def generateNextMove():
 def start_game():
 
     default_game_start = {
-        "state": {"location":"town"},
+        "state": {"location":"AGI House Woods"},
         "narrative": "You are in the woods, surrounded by trees. You can go to the forest or the mountains. Something moves in the bushes!",
         "possibleActions": ["investigate the bushes", "go to the mountains", "go to the forest"],
         "monsters": [

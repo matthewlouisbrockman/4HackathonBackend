@@ -57,8 +57,12 @@ def getActions(game_id):
     cur.execute(select_query, (game_id,))
     rows = cur.fetchall()
     cur.close()
-    conn.close() 
-    return rows
+    conn.close()
+
+    result = []
+    for row in rows:
+        result.append({"content": row[2], "actor": row[3]})
+    return result
 
 
 if __name__ == "__main__":
@@ -67,3 +71,5 @@ if __name__ == "__main__":
     game_id, action_id = insertAction(action, None)
     print(game_id, action_id)
     print(getActions(game_id))
+
+    # just give actions and the actor

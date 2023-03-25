@@ -3,9 +3,6 @@ import openaiHandler
 import db
 def handleActionFromInput(input, gameId):
     
-    gameHistory = db.getActions(gameId)
-    print('gameHistory', gameHistory)
-
     systemMessage = {
         "role": "system",
         "content": """This is a JSON based adventure game. You return the JSON for the state changes on each action.
@@ -31,10 +28,25 @@ interface monster {
 """
     }
 
-    startingAction = {
-        "role": "assistant",
-        "content": """{"state": {"location":"town"}, "narrative": "You are in a town. You can go to the forest or the mountains", "possibleActions": ["go to forest", "go to mountains"]}"""
-    }
+    # startingAction = {
+    #     "role": "assistant",
+    #     "content": """{"state": {"location":"town"}, "narrative": "You are in a town. You can go to the forest or the mountains", "possibleActions": ["go to forest", "go to mountains"]}"""
+    # }
+
+    gameHistory = db.getActions(gameId)
+
+    priorActions = []
+    for action in gameHistory:
+        if action['actor'] == 'assistant':
+            priorActions.append({
+                "role": "assistant",
+                "content": action['content']
+            })
+        else:
+            priorActions.append({
+                "role": "user",
+                "content": action['content']
+            })
 
     newMessage = {
         "role": "user",
@@ -42,10 +54,12 @@ interface monster {
     }
 
     res =  openaiHandler.queryChat(
-        messages=[systemMessage, startingAction, newMessage],
+        messages=[systemMessage] + priorActions +  [newMessage],
         max_tokens=400,
     )
 
+    db.insertAction(input, "user", gameId)
+    db.insertAction(res[0], "assistant", gameId)
     res = json.loads(res[0])
 
     print('res: ', res)

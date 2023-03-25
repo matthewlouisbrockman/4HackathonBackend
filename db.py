@@ -31,15 +31,15 @@ def createGameId():
     return generated_id
 
 
-def insertAction(action, game_id):
+def insertAction(action, actor, game_id=None):
     game_id = game_id or createGameId()
     insert_query = """INSERT INTO actions
-                      (action, game_id) 
-                      VALUES (%s, %s)
+                      (action, actor, game_id) 
+                      VALUES (%s, %s, %s)
                       RETURNING action_id"""
     conn = get_connection()
     cur = conn.cursor()
-    cur.execute(insert_query, (json.dumps(action), game_id))
+    cur.execute(insert_query, (json.dumps(action), actor, game_id))
     generated_id = cur.fetchone()[0]
     conn.commit()
     cur.close()

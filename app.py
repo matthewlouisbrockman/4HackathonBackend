@@ -8,7 +8,7 @@ CORS(app)
 def hello_world():
     return "<p>Hello, World!</p>"
 
-@app.route("/generateNextMove")
+@app.route("/generateNextMove", methods=['POST'])
 def generateNextMove():
 
     requestJSON = request.get_json()

@@ -38,7 +38,7 @@ def insertAction(action, game_id):
                    f"(%s, %s, %s, %s, %s)"
     conn = get_connection()
     cur = conn.cursor()
-    cur.execute(insert_query, (*action, game_id))
+    cur.execute(insert_query, (, game_id))
     conn.commit()
     cur.close()
     conn.close()
@@ -54,3 +54,9 @@ def getAction(action_id):
     cur.close()
     conn.close() 
     return row
+
+
+if __name__ == "__main__":
+    # TESTING
+    action = ()
+    print(createGameId())

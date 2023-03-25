@@ -9,7 +9,7 @@ Each response to the user action is a JSON object with the following properties:
 
 interface Action {
   "narrative": string, // the text that is displayed to the user
-  "actions": string[], // an array of actions that the user can take
+  "possibleActions": string[], // an array of actions that the user can take
   "state": object // an object that contains the state of the game with at least {"location": string}
   "monsters": monster[] //an array of monsters that are in the location
 }
@@ -29,7 +29,7 @@ interface monster {
 
     startingAction = {
         "role": "assistant",
-        "content": """{"state": {"location":"town"}, "narrative": "You are in a town. You can go to the forest or the mountains", "actions": ["go to forest", "go to mountains"]}"""
+        "content": """{"state": {"location":"town"}, "narrative": "You are in a town. You can go to the forest or the mountains", "possibleActions": ["go to forest", "go to mountains"]}"""
     }
 
     newMessage = {

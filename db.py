@@ -1,51 +1,41 @@
-import uuid
-from sqlalchemy import Column, Float, ForeignKey, String, TIMESTAMP
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import relation
-from sqlalchemy.sql import func
+import os
+from urllib.parse import urlparse
 
-Base = declarative_base()
+import psycopg2
 
-
-class Games(Base):
-    __tablename__ = 'games'
-
-    id = Column(UUID(as_uuid=True), default=uuid.uuid4)
-    created_at = Column(TIMESTAMP, nullable=False, default=func.now())
+DATABASE_URL = os.environ.get("DATABASE_URL")
+URL_PARSED = urlparse(DATABASE_URL)
 
 
-class Actions(Base):
-    __tablename__ = 'actions'
-
-    action_id = Column(String(36), primary_key=True, default=str(uuid.uuid4())) 
-    created_at = Column(TIMESTAMP, nullable=False, default=func.now())
-    action = Column(String(500)) 
-    actor = Column(String(100))
-
-    game_id = Column(UUID(as_uuid=True), ForeignKey('game.id'))
-    game = relation('Games')
+def get_connection():
+    return psycopg2.connect(
+        host=URL_PARSED.hostname,
+        database=URL_PARSED.path[1:],
+        user=URL_PARSED.username,
+        password=URL_PARSED.password,
+    )
 
 
-class APICalls(Base):
-    __tablename__ = 'apicalls'
+def insertAction(action, game_id):
+    insert_query = f"INSERT INTO actions " \
+                   f"(action_id, created_at, action, actor, game_id) " \
+                   f"VALUES " \
+                   f"(%s, %s, %s, %s, %s)"
+    conn = get_connection()
+    cur = conn.cursor()
+    cur.execute(insert_query, (*action, game_id))
+    conn.commit()
+    curr.close()
+    conn.close()
 
-    api_call_id = Column(String(36), primary_key=True, default=str(uuid.uuid4())) 
-    provider = Column(String(50))
-    model = Column(String(50))
-    latency = Column(Float, nullable=False)
-    created_at = Column(TIMESTAMP, nullable=False, default=func.now())
-    cost = Column(Float, nullable=False)
 
-    game_id = Column(UUID(as_uuid=True), ForeignKey('game.id'))
-    game = relation('Games')
-
-
-class Images(Base):
-    __tablename__ = 'images'
-
-    image_id = Column(String(36), primary_key=True, default=str(uuid.uuid4()))
-    created_at = Column(TIMESTAMP, nullable=False, default=func.now())
-
-    game_id = Column(UUID(as_uuid=True), ForeignKey('game.id'))
-    game = relation('Games')
+def getAction(action_id):
+    select_query = f"SELECTION * from actions " \
+                   f"where game_id = %s"
+    conn = get_connection()
+    cur = conn.cursor()
+    cur.execute(select_query, (action_id,))
+    row = cur.fetchone()
+    cur.close()
+    conn.close() 
+    return row

@@ -19,11 +19,12 @@ def generateNextMove():
     requestJSON = request.get_json()
 
     gameId = requestJSON.get('gameId')
+
     playerInput = requestJSON.get('playerInput')
 
     formattedInput = f"""{{"playerAction": {playerInput}}}"""
 
-    newAction = actionHelper.handleActionFromInput(formattedInput)
+    newAction = actionHelper.handleActionFromInput(formattedInput, gameId)
     return jsonify({'status': 'success', 'results': newAction})
 
 
@@ -51,7 +52,7 @@ def start_game():
             }]
     }
 
-    gameId, _ = db.insertAction(default_game_start, None)
+    gameId, _ = db.insertAction(default_game_start, "assistant")
 
     return jsonify({'status': 'success', 'results': default_game_start, 'gameId': str(gameId)})
 

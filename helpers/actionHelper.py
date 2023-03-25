@@ -1,7 +1,11 @@
 import json
 import openaiHandler
+import db
+def handleActionFromInput(input, gameId):
+    
+    gameHistory = db.getActions(gameId)
+    print('gameHistory', gameHistory)
 
-def handleActionFromInput(input):
     systemMessage = {
         "role": "system",
         "content": """This is a JSON based adventure game. You return the JSON for the state changes on each action.

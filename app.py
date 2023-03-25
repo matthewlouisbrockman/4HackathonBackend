@@ -15,6 +15,8 @@ def generateNextMove():
 
     print('requestJSON: ', requestJSON)
 
+    gameId = requestJSON.get('gameId')
+
     return {'status': 'success', 'results': {'You kill the bear!'}}
 
 if __name__ == "__main__":

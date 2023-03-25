@@ -33,7 +33,22 @@ def start_game():
     default_game_start = {
         "state": {"location":"town"},
         "narrative": "You are in the woods, surrounded by trees. You can go to the forest or the mountains. Something moves in the bushes!",
-        "possibleActions": ["investigate the bushes", "go to the mountains", "go to the forest"]
+        "possibleActions": ["investigate the bushes", "go to the mountains", "go to the forest"],
+        "monsters": [
+            {
+                "name": "Rabid Squirril",
+                "level": 0,
+                "currentHealth": 0,
+                "maxHealth": 5,
+                "type": "Nature",
+                "attacks": [
+                    {
+                        "name": "Bite",
+                        "damage": 1,
+                        "type": "physical"
+                    }
+                ]
+            }]
     }
 
     return jsonify({'status': 'success', 'results': default_game_start, 'gameId': '1234'})

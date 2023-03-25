@@ -1,5 +1,10 @@
+import json
+
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+
+
+from helpers import actionHelper
 
 app = Flask(__name__)
 CORS(app)
@@ -16,8 +21,20 @@ def generateNextMove():
     print('requestJSON: ', requestJSON)
 
     gameId = requestJSON.get('gameId')
+    playerInput = requestJSON.get('playerInput')
 
-    return jsonify({'status': 'success', 'results': {'narrative':'You kill the bear!'}})
+    print('playerInput: ', playerInput)
+
+    formattedInput = f"""{{"playerAction": {playerInput}}}"""
+
+
+    newAction = actionHelper.handleActionFromInput(formattedInput)[0]
+
+    print('newAction: ', newAction)
+
+
+
+    return jsonify({'status': 'success', 'results': newAction})
 
 if __name__ == "__main__":
     app.run()

@@ -10,7 +10,6 @@ def queryChat(messages: list, **kwargs) -> str:
       **kwargs
     )
 
-
     return [choice['message']['content'] for choice in response['choices']]
 
 def queryCompletion(prompt: str,  **kwargs) -> str:

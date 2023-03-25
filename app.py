@@ -18,23 +18,25 @@ def generateNextMove():
 
     requestJSON = request.get_json()
 
-    print('requestJSON: ', requestJSON)
-
     gameId = requestJSON.get('gameId')
     playerInput = requestJSON.get('playerInput')
 
-    print('playerInput: ', playerInput)
-
     formattedInput = f"""{{"playerAction": {playerInput}}}"""
 
-
     newAction = actionHelper.handleActionFromInput(formattedInput)
-
-    print('newAction: ', newAction)
-
-
-
     return jsonify({'status': 'success', 'results': newAction})
+
+
+@app.route("/start_game")
+def start_game():
+
+    default_game_start = {
+        "state": {"location":"town"},
+        "narrative": "You are in the woods, surrounded by trees. You can go to the forest or the mountains. Something moves in the bushes!",
+        "possibleActions": ["investigate the bushes", "go to the mountains", "go to the forest"]
+    }
+
+    return jsonify({'status': 'success', 'results': default_game_start, 'gameId': '1234'})
 
 if __name__ == "__main__":
     app.run()

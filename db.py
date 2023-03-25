@@ -16,7 +16,22 @@ def get_connection():
     )
 
 
+def createGameId():
+    insert_query = f"INSERT INTO games " \
+                   f"DEFAULT VALUES " \
+                   f"RETURNING id"
+    conn = get_connection()
+    cur = conn.cursor()
+    cur.execute(insert_query)
+    generated_id = cur.fetchone()[0]
+    conn.commit()
+    cur.close()
+    conn.close()
+    return generated_id
+
+
 def insertAction(action, game_id):
+    game_id = game_id or createGameId()
     insert_query = f"INSERT INTO actions " \
                    f"(action_id, created_at, action, actor, game_id) " \
                    f"VALUES " \

@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -17,7 +17,7 @@ def generateNextMove():
 
     gameId = requestJSON.get('gameId')
 
-    return {'status': 'success', 'results': {'You kill the bear!'}}
+    return jsonify({'status': 'success', 'results': {'narrative':'You kill the bear!'}})
 
 if __name__ == "__main__":
     app.run()

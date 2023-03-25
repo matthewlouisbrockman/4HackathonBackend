@@ -27,7 +27,7 @@ def generateNextMove():
     return jsonify({'status': 'success', 'results': newAction})
 
 
-@app.route("/start_game")
+@app.route("/startGame", methods=['POST'])
 def start_game():
 
     default_game_start = {

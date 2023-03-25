@@ -44,12 +44,14 @@ def insertAction(action, game_id):
     conn.close()
 
 
-def getAction(action_id):
-    select_query = f"SELECTION * from actions " \
-                   f"where game_id = %s"
+def getActions(game_id):
+    select_query = """SELECTION * from actions
+                   where game_id = %s
+                   ORDER BY created_at DESCENDING
+                   LIMIT 10"""
     conn = get_connection()
     cur = conn.cursor()
-    cur.execute(select_query, (action_id,))
+    cur.execute(select_query, (game_id,))
     row = cur.fetchone()
     cur.close()
     conn.close() 

@@ -28,7 +28,7 @@ def generateNextMove():
     formattedInput = f"""{{"playerAction": {playerInput}}}"""
 
 
-    newAction = actionHelper.handleActionFromInput(formattedInput)[0]
+    newAction = actionHelper.handleActionFromInput(formattedInput)
 
     print('newAction: ', newAction)
 

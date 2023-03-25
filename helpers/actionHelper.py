@@ -1,3 +1,4 @@
+import json
 import openaiHandler
 
 def handleActionFromInput(input):
@@ -26,7 +27,13 @@ Each response to the user action is a JSON object with the following properties:
         "content": input
     }
 
-    return openaiHandler.queryChat(
+    res =  openaiHandler.queryChat(
         messages=[systemMessage, startingAction, newMessage],
         max_tokens=400,
     )
+
+    res = json.loads(res[0])
+
+    print('res: ', res)
+
+    return res

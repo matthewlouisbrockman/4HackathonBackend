@@ -1,4 +1,4 @@
-import json
+import db
 
 from flask import Flask, request, jsonify
 from flask_cors import CORS
@@ -51,7 +51,9 @@ def start_game():
             }]
     }
 
-    return jsonify({'status': 'success', 'results': default_game_start, 'gameId': '1234'})
+    gameId, _ = db.insertAction(default_game_start, None)
+
+    return jsonify({'status': 'success', 'results': default_game_start, 'gameId': str(gameId)})
 
 if __name__ == "__main__":
     app.run()

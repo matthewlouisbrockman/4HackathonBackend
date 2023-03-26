@@ -3,7 +3,7 @@ import openaiHandler
 import db
 
 def updateCombatAction(action, gameId):
-    db.insertAction(json.dumps(action), "assistant", gameId)
+    db.insertAction(action, "assistant", gameId)
     
     systemMessage = {
         "role": "system",
@@ -65,6 +65,6 @@ interface monster {
     print('res: ', res)
 
     parsedRes = json.loads(res[0])
-    db.insertAction(res[0], "assistant", gameId)
+    db.insertAction(parsedRes, "assistant", gameId)
 
     return parsedRes

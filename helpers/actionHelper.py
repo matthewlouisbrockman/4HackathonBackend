@@ -63,10 +63,10 @@ interface monster {
         max_tokens=400,
     )
 
+    res = json.loads(res[0])
 
     db.insertAction(input, "user", gameId)
-    db.insertAction(res[0], "assistant", gameId)
-    res = json.loads(res[0])
+    db.insertAction(res, "assistant", gameId)
 
     print('res: ', res)
     print('narrative', res['narrative'])

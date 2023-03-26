@@ -29,6 +29,7 @@ interface monster {
 - The user can choose to take one of the options or make up its own
 - Make sure to give new results each time, especially after combat the defeated enemies should be gone.
 - Be creative and detailed as possible.
+- All enemies start with full health when seen for the first time.
 """
     }
 
@@ -62,9 +63,9 @@ interface monster {
         max_tokens=400,
     )
 
-    print('res: ', res)
 
     parsedRes = json.loads(res[0])
+    print('parsedRes: ', parsedRes)
     db.insertAction(parsedRes, "assistant", gameId)
 
     return parsedRes

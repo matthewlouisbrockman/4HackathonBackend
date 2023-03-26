@@ -85,6 +85,7 @@ def get_location_image():
         prompt = f"{name}"
         print("Prompt:", prompt)
         image_url = queryImage(prompt, '')[0]
+        print(image_url)
         db.insertImage(image_url, name)
     print("image_url", image_url)
     return {"url": image_url, "status": "success"}

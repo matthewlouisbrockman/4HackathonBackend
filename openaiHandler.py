@@ -1,15 +1,20 @@
 import os
 import openai
 
+from time import time
+
 openai.api_key = os.environ.get('OPENAI_API_KEY')
 
 def queryChat(messages: list, **kwargs) -> str:
+    print("Starting GPT queryChat")
+    t0 = time()
     response = openai.ChatCompletion.create(
       messages=messages,
       model="gpt-3.5-turbo",
       temperature=1,
       **kwargs
     )
+    print(f"Received GPT completion after {time() - t0} seconds")
 
     return [choice['message']['content'] for choice in response['choices']]
 

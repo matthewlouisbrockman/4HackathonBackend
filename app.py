@@ -81,13 +81,10 @@ def get_location_image():
 
     image_url = db.getImage(name)
     if not image_url:
-        print(f"Image not found for {name}, generating new image")
         prompt = f"{name}"
-        print("Prompt:", prompt)
-        image_url = queryImage(prompt, '')[0]
-        print(image_url)
+        image_url = queryImage(prompt, '')[0]['url']
         db.insertImage(image_url, name)
-    print("image_url", image_url)
+
     return {"url": image_url, "status": "success"}
 
 

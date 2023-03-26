@@ -82,7 +82,7 @@ def get_location_image():
     if not img:
         prompt = f"{name}"
         image_url = queryImage(prompt, '')[0]
-        contents = urllib2.urlopen(image_url).read()
+        contents = urllib.urlopen(image_url).read()
         img = base64.b64encode(contents)
         db.insertImage(img, name)
     print("image start and end", img[:10], img[-10:])

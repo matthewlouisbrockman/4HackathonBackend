@@ -97,7 +97,7 @@ def get_creature_image():
     image_url = db.getImage(name)
     if not image_url:
         print(f"Image not found for {name}, generating new image")
-        prompt = f"{name}"
+        prompt = f"{name}, game asset"
         print("Prompt:", prompt)
         image_url = queryImage(prompt, '')[0]
         print(image_url)

@@ -67,15 +67,15 @@ def getActions(game_id):
     return result
 
 
-def insertImage(image: bytes, name):
+def insertImage(url, name):
     insert_query = """INSERT INTO images
-                      (image, name)
+                      (url, name)
                       VALUES (%s, %s)
                       RETURNING image_id"""
     conn = get_connection()
     cur = conn.cursor()
     cur.execute(
-        insert_query, (psycopg2.Binary(image), name)
+        insert_query, (url, name)
     )
     generated_id = cur.fetchone()[0] 
     conn.commit()
@@ -86,11 +86,13 @@ def insertImage(image: bytes, name):
 
 def getImage(name):
     select_query = """SELECT * from images
-                   where name = %s"""
+                   WHERE name = %s
+                   AND created_at >= NOW() - INTERVAL '1 hour'
+                   ORDER BY created_at ASC"""
     conn = get_connection()
     cur = conn.cursor()
     cur.execute(select_query, (name,))
-    result = bytes(cur.fetchone()[3]) if cur.rowcount else None
+    result = cur.fetchone()[5] if cur.rowcount else None
     cur.close()
     conn.close()
     return result
@@ -107,8 +109,9 @@ if __name__ == "__main__":
     IMG_PATH = "../4HackathonFrontend/public/logo192.png"
     with open(IMG_PATH, "rb") as f:
         im = f.read()
-    print('im', im)
-    name = "test"
+    # print('im', im)
+    name = "test_name"
+    im = "test_img"
     image_id = insertImage(im, name)
     print('im id', image_id)
     im2 = getImage(name)

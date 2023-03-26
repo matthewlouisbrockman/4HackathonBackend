@@ -54,7 +54,7 @@ interface monster {
 
     newMessage = {
         "role": "user",
-        "content": input + '\n\nProvide the JSON for what happens next. Make the narrative detailed, and descriptive. Ensure that you do not repeat yourself. Increase the level of the monsters each time.'
+        "content": input + '\n\nProvide the JSON for what happens next including a narrative of two to four sentences. Make the narrative detailed, and descriptive. Ensure that you do not repeat yourself. Increase the level of the monsters each time.'
     }
 
     print('payload: ', priorActions +  [newMessage])

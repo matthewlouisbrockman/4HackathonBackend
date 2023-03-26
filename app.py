@@ -82,10 +82,12 @@ def get_location_image():
     if not img:
         prompt = f"{name}"
         image_url = queryImage(prompt, '')[0]
+        print("image_url", image_url)
         contents = urllib.urlopen(image_url).read()
+        print("image_contents start end", contents[:10], contents[-10:])
         img = base64.b64encode(contents)
         db.insertImage(img, name)
-    print("image start and end", img[:10], img[-10:])
+    print("image start end", img[:10], img[-10:])
     return {"base64img": img, "status": "success"}
 
 if __name__ == "__main__":

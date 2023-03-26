@@ -72,6 +72,7 @@ def resolve_combat_action():
     res = combatHelper.updateCombatAction(combat_result, gameId)
     return jsonify({ "status": "success", "results": res, "gameId": gameId })
 
+
 @app.route("/getLocationImage", methods=['POST'])
 def get_location_image():
     requestJSON = request.get_json()
@@ -87,6 +88,25 @@ def get_location_image():
         db.insertImage(image_url, name)
     print("image_url", image_url)
     return {"url": image_url, "status": "success"}
+
+
+@app.route("/getCreatureImage", methods=['POST'])
+def get_creature_image():
+    requestJSON = request.get_json()
+    name = requestJSON.get('name')
+    print('creature_name', name)
+
+    image_url = db.getImage(name)
+    if not image_url:
+        print(f"Image not found for {name}, generating new image")
+        prompt = f"{name}"
+        print("Prompt:", prompt)
+        image_url = queryImage(prompt, '')[0]
+        print(image_url)
+        db.insertImage(image_url, name)
+    print("image_url", image_url)
+    return {"url": image_url, "status": "success"}
+
 
 if __name__ == "__main__":
     app.run()

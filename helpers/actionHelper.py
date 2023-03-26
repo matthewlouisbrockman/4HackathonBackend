@@ -56,15 +56,19 @@ interface monster {
         "content": input + '\n\nProvide the JSON for what happens next. Ensure that you do not repeat yourself.'
     }
 
+    print('payload: ', priorActions +  [newMessage])
+
     res =  openaiHandler.queryChat(
         messages=[systemMessage] + priorActions +  [newMessage],
         max_tokens=400,
     )
+
 
     db.insertAction(input, "user", gameId)
     db.insertAction(res[0], "assistant", gameId)
     res = json.loads(res[0])
 
     print('res: ', res)
+    print('narrative', res['narrative'])
 
     return res

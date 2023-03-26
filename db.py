@@ -52,7 +52,7 @@ def insertAction(action, actor, game_id=None):
 def getActions(game_id):
     select_query = """SELECT * from actions
                    where game_id = %s
-                   ORDER BY created_at DESC
+                   ORDER BY created_at ASC
                    LIMIT 10"""
     conn = get_connection()
     cur = conn.cursor()

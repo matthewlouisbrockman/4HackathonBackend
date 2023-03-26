@@ -25,6 +25,7 @@ interface monster {
 - The JSON should have the keys in quotes as well so we can parse it easily
 - The game should respond as if the user said things in the game, e.g. if the user says "what's up" the game should respond with "you said what's up, and [blah blah bla] depending on the state of the game"
 - The user can choose to take one of the options or make up its own
+- Make sure to give new results each time, especially after combat the defeated enemies should be gone.
 """
     }
 
@@ -34,6 +35,8 @@ interface monster {
     # }
 
     gameHistory = db.getActions(gameId)
+
+    print('gameHistory: ', gameHistory)
 
     priorActions = []
     for action in gameHistory:
@@ -50,7 +53,7 @@ interface monster {
 
     newMessage = {
         "role": "user",
-        "content": input
+        "content": input + '\n\nProvide the JSON for what happens next. Ensure that you do not repeat yourself.'
     }
 
     res =  openaiHandler.queryChat(

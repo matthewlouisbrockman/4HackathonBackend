@@ -4,7 +4,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 
 
-from helpers import actionHelper
+from helpers import actionHelper, combatHelper
 
 app = Flask(__name__)
 CORS(app)
@@ -55,6 +55,18 @@ def start_game():
     gameId, _ = db.insertAction(default_game_start, "assistant")
 
     return jsonify({'status': 'success', 'results': default_game_start, 'gameId': str(gameId)})
+
+
+@app.route("/resolveCombayAction", methods=['POST'])
+def resolve_combat_action():
+    # combatResult, gameId
+    requestJSON = request.get_json()
+    combat_result = requestJSON.get('combatResult')
+    gameId = requestJSON.get('gameId')
+    print('gameId', gameId)
+    print('combat_result', combat_result)
+    combatHelper.updateCombatAction(combat_result, gameId)
+    return jsonify({ "status": "success" })
 
 if __name__ == "__main__":
     app.run()

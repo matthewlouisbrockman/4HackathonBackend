@@ -1,5 +1,5 @@
 import base64
-import urllib2
+import urllib
 
 import db
 

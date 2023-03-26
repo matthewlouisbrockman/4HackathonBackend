@@ -21,8 +21,8 @@ interface monster {
   "name": string, // the name of the monster
   "level": number, // the level of the monster
   "type": string, // the type of the monster
-  "maxHealth: int, //max helath of the monster
-  "currentHealth": int, //should start off at maxHeath
+  "maxHealth: int, //max health of the monster
+  "currentHealth": int, //should start off at maxHealth
   "attacks":attack[] //the different attacks the monster has
 }
 
@@ -39,6 +39,7 @@ interface attack{
 - Make sure to give new results each time, especially after combat the defeated enemies should be gone.
 - Be creative and detailed as possible.
 - All enemies start with full health when seen for the first time.
+- All monsters/enemies have maxHealth strictly greater than 0
 """
     }
 

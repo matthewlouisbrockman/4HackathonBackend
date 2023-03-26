@@ -53,7 +53,7 @@ interface monster {
 
     newMessage = {
         "role": "user",
-        "content": input + '\n\nProvide the JSON for what happens next. Ensure that you do not repeat yourself.'
+        "content": input + '\n\nProvide the JSON for what happens next. Make the narrative detailed, and descriptive. Ensure that you do not repeat yourself.'
     }
 
     print('payload: ', priorActions +  [newMessage])
@@ -62,7 +62,7 @@ interface monster {
         messages=[systemMessage] + priorActions +  [newMessage],
         max_tokens=400,
     )
-
+    print(f"res: {res}")
     res = json.loads(res[0])
 
     db.insertAction(input, "user", gameId)

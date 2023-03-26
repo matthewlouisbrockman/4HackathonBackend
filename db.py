@@ -67,15 +67,15 @@ def getActions(game_id):
     return result
 
 
-def insertImage(image: bytes, game_id):
+def insertImage(image: bytes, name):
     insert_query = """INSERT INTO images
-                      (image, game_id)
+                      (image, name)
                       VALUES (%s, %s)
                       RETURNING image_id"""
     conn = get_connection()
     cur = conn.cursor()
     cur.execute(
-        insert_query, (psycopg2.Binary(image), game_id)
+        insert_query, (psycopg2.Binary(image), name)
     )
     generated_id = cur.fetchone()[0] 
     conn.commit()
@@ -84,12 +84,12 @@ def insertImage(image: bytes, game_id):
     return generated_id 
 
 
-def getImage(image_id):
+def getImage(name):
     select_query = """SELECT * from images
-                   where image_id = %s"""
+                   where name = %s"""
     conn = get_connection()
     cur = conn.cursor()
-    cur.execute(select_query, (image_id,))
+    cur.execute(select_query, (name,))
     result = bytes(cur.fetchone()[3]) if cur.rowcount else None
     cur.close()
     conn.close()
@@ -108,8 +108,9 @@ if __name__ == "__main__":
     with open(IMG_PATH, "rb") as f:
         im = f.read()
     print('im', im)
-    image_id = insertImage(im, game_id)
+    name = "test"
+    image_id = insertImage(im, name)
     print('im id', image_id)
-    im2 = getImage(image_id)
+    im2 = getImage(name)
     print('im2', im2)
     print('equal', im == im2)

@@ -1,3 +1,6 @@
+import base64
+import urllib
+
 import db
 
 from flask import Flask, request, jsonify
@@ -5,6 +8,7 @@ from flask_cors import CORS
 
 
 from helpers import actionHelper, combatHelper
+from openaiHandler import queryImage
 
 app = Flask(__name__)
 CORS(app)
@@ -67,6 +71,24 @@ def resolve_combat_action():
     print('combat_result', combat_result)
     res = combatHelper.updateCombatAction(combat_result, gameId)
     return jsonify({ "status": "success", "results": res, "gameId": gameId })
+
+@app.route("/getLocationImage", methods=['POST'])
+def get_location_image():
+    requestJSON = request.get_json()
+    name = requestJSON.get('name')
+    print('location_name', name)
+
+    img = db.getImage(name)
+    if not img:
+        prompt = f"{name}"
+        image_url = queryImage(prompt, '')[0]
+        print("image_url", image_url)
+        contents = urllib.urlopen(image_url).read()
+        print("image_contents start end", contents[:10], contents[-10:])
+        img = base64.b64encode(contents)
+        db.insertImage(img, name)
+    print("image start end", img[:10], img[-10:])
+    return {"base64img": img, "status": "success"}
 
 if __name__ == "__main__":
     app.run()

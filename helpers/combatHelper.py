@@ -21,6 +21,15 @@ interface monster {
   "name": string, // the name of the monster
   "level": number, // the level of the monster
   "type": string, // the type of the monster
+  "maxHealth: int, //max helath of the monster
+  "currentHealth": int, //should start off at maxHeath
+  "attacks":attack[] //the different attacks the monster has
+}
+
+interface attack{
+  "name": string, //the name of the attack
+  "damage": int, //how much damage it does
+  "type": string //the type of attack it is which influences bonuses in fighting
 }
 
 - Do not worry if user input is not valid, the game will handle that, just make sure to return the correct JSON from the bot
@@ -29,6 +38,7 @@ interface monster {
 - The user can choose to take one of the options or make up its own
 - Make sure to give new results each time, especially after combat the defeated enemies should be gone.
 - Be creative and detailed as possible.
+- All enemies start with full health when seen for the first time.
 """
     }
 
@@ -62,9 +72,9 @@ interface monster {
         max_tokens=400,
     )
 
-    print('res: ', res)
 
     parsedRes = json.loads(res[0])
+    print('parsedRes: ', parsedRes)
     db.insertAction(parsedRes, "assistant", gameId)
 
     return parsedRes

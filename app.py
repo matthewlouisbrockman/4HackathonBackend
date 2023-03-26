@@ -78,17 +78,15 @@ def get_location_image():
     name = requestJSON.get('name')
     print('location_name', name)
 
-    img = db.getImage(name)
-    if not img:
+    image_url = db.getImage(name)
+    if not image_url:
+        print(f"Image not found for {name}, generating new image")
         prompt = f"{name}"
+        print("Prompt:", prompt)
         image_url = queryImage(prompt, '')[0]
-        print("image_url", image_url)
-        contents = urllib.urlopen(image_url).read()
-        print("image_contents start end", contents[:10], contents[-10:])
-        img = base64.b64encode(contents)
-        db.insertImage(img, name)
-    print("image start end", img[:10], img[-10:])
-    return {"base64img": img, "status": "success"}
+        db.insertImage(image_url, name)
+    print("image_url", image_url)
+    return {"url": image_url, "status": "success"}
 
 if __name__ == "__main__":
     app.run()

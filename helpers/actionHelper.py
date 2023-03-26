@@ -17,7 +17,7 @@ interface Action {
 
 interface monster {
   "name": string, // the name of the monster
-  "level": number, // the level of the monster
+  "level": number, // the level of the monster. This should be more than 1.
   "type": string, // the type of the monster
 }
 
@@ -26,6 +26,7 @@ interface monster {
 - The game should respond as if the user said things in the game, e.g. if the user says "what's up" the game should respond with "you said what's up, and [blah blah bla] depending on the state of the game"
 - The user can choose to take one of the options or make up its own
 - Make sure to give new results each time, especially after combat the defeated enemies should be gone.
+- enemies should increase with health over time
 """
     }
 
@@ -53,14 +54,14 @@ interface monster {
 
     newMessage = {
         "role": "user",
-        "content": input + '\n\nProvide the JSON for what happens next. Make the narrative detailed, and descriptive. Make references to San Francisco and Startups. Restrict output to maximum three sentences. Ensure that you do not repeat yourself.'
+        "content": input + '\n\nProvide the JSON for what happens next. Make the narrative detailed, and descriptive. Ensure that you do not repeat yourself. Increase the level of the monsters each time.'
     }
 
     print('payload: ', priorActions +  [newMessage])
 
     res =  openaiHandler.queryChat(
         messages=[systemMessage] + priorActions +  [newMessage],
-        max_tokens=400,
+        max_tokens=800,
     )
     print(f"res: {res}")
     res = json.loads(res[0])

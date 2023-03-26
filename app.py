@@ -67,8 +67,6 @@ def resolve_combat_action():
     requestJSON = request.get_json()
     combat_result = requestJSON.get('combatResult')
     gameId = requestJSON.get('gameId')
-    print('gameId', gameId)
-    print('combat_result', combat_result)
     res = combatHelper.updateCombatAction(combat_result, gameId)
     return jsonify({ "status": "success", "results": res, "gameId": gameId })
 
